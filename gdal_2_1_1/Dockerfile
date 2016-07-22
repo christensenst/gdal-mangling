@@ -1,7 +1,7 @@
 FROM debian:jessie
 
 ENV ROOTDIR /usr/local/
-ENV GDAL_VERSION 2.1.0
+ENV GDAL_VERSION 2.1.1
 
 # Load assets
 WORKDIR $ROOTDIR/
@@ -20,10 +20,9 @@ RUN apt-get update && apt-get install -y \
     libspatialite-dev \
     sqlite3 \
     libpq-dev \
-    wget \
-    curl \
-    libcurl4-gnutls-dev \
     libproj-dev \
+    python-pyproj \
+    libcurl4-gnutls-dev \
     libxml2-dev \
     libgeos-dev \
     libnetcdf-dev \
@@ -31,12 +30,13 @@ RUN apt-get update && apt-get install -y \
     libspatialite-dev \
     libhdf4-alt-dev \
     libhdf5-serial-dev \
+    unixodbc \
+    libmdbodbc1 \
+    binutils \
+    wget \
     vim \
-    unzip \
+    curl \
     sudo
-
-## Install pip
-RUN curl -o "/tmp/get-pip.py" --create-dirs --silent --show-error --retry 5 https://bootstrap.pypa.io/get-pip.py && python /tmp/get-pip.py --no-wheel
 
 ## Download and install GDAL
 RUN cd src && tar -xvf gdal-${GDAL_VERSION}.tar.gz && cd gdal-${GDAL_VERSION} \
@@ -50,6 +50,3 @@ RUN cd src && tar -xvf gdal-${GDAL_VERSION}.tar.gz && cd gdal-${GDAL_VERSION} \
     && apt-get update -y \
     && apt-get remove -y --purge build-essential \
     && rm -Rf $ROOTDIR/src/*
-
-# Output version and capabilities by default.
-CMD gdalinfo --version && gdalinfo --formats && ogrinfo --formats
