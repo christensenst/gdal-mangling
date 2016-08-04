@@ -30,8 +30,7 @@ RUN apt-get update && apt-get install -y \
     libspatialite-dev \
     libhdf4-alt-dev \
     libhdf5-serial-dev \
-    unixodbc \
-    libmdbodbc1 \
+    openjdk-7-jdk \
     binutils \
     wget \
     vim \
@@ -42,9 +41,11 @@ RUN apt-get update && apt-get install -y \
 RUN cd src && tar -xvf gdal-${GDAL_VERSION}.tar.gz && cd gdal-${GDAL_VERSION} \
     && ./configure \
         --with-python \
+        --with-java=yes \
         --with-geos=yes \
         --with-spatialite \
         --with-pg \
+        --with-mdb=yes \
         --with-curl \
     && make && make install && ldconfig \
     && apt-get update -y \
