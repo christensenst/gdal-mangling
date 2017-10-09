@@ -63,3 +63,5 @@ target/
 
 .pycharm_helpers/
 .idea/
+
+.DS_Store
